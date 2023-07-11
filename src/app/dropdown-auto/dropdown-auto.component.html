@@ -2,16 +2,18 @@
   <input
     id="autocomplete-input"
     type="text"
-    placeholder="Item"
+    [placeholder]="searchPlaceholder"
     [(ngModel)]="searchTerm"
     (input)="search($event)"
   />
   <ng-container *ngIf="displayDropdown">
     <ul class="autocomplete-list">
       <li *ngFor="let item of filteredItems">
-        <div class="pointer" (click)="selectItem(item.name)">
-          {{ item.name }}
-        </div>
+        <div
+          class="pointer"
+          (click)="selectItem(item)"
+          [innerHTML]="item.name | charsBold : searchTerm"
+        ></div>
       </li>
     </ul>
   </ng-container>

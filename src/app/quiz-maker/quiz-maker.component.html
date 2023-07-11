@@ -1,18 +1,36 @@
 <ng-container *ngIf="categories$ | async">
   <div class="row">
+    <input type="checkbox" id="inputType" [checked]="enableAutoComplete" (click)="toggleAutoComplete()">
+    <label for="inputType">Enable autocomplete dropdown?</label>
+  </div>
+  <div class="row">
     <div class="col-sm-11">
-      <app-dropdown-auto [items]="uniqueCategories"></app-dropdown-auto>
-      <app-dropdown
-        [categories]="uniqueCategories"
-        [defaultOption]="'Select category'"
-        (selectedOption)="handleCatSelectedOption($event)"
-      ></app-dropdown>
-      <app-dropdown
-        *ngIf="hasSubCategory"
-        [categories]="activeCategories"
-        [defaultOption]="'Select a subCategory'"
-        (selectedOption)="handleSubCatSelectedOption($event)"
-      ></app-dropdown>
+      <ng-template #autocomplete>
+        <app-dropdown-auto
+          [items]="uniqueCategories"
+          [searchPlaceholder]="'Search a category'"
+          (selectedItem)="handleCatSelectedOption($event)"
+        ></app-dropdown-auto>
+        <app-dropdown-auto
+          [items]="activeCategories"
+          [searchPlaceholder]="'Select a subCategory'"
+          (selectedItem)="handleSubCatSelectedOption($event)"
+        ></app-dropdown-auto>
+      </ng-template>
+      <ng-container *ngIf="!enableAutoComplete; else autocomplete">
+        <app-dropdown
+          [categories]="uniqueCategories"
+          [defaultOption]="'Select category'"
+          (selectedOption)="handleCatSelectedOption($event)"
+        ></app-dropdown>
+        <app-dropdown
+          *ngIf="hasSubCategory"
+          [categories]="activeCategories"
+          [defaultOption]="'Select a subCategory'"
+          (selectedOption)="handleSubCatSelectedOption($event)"
+        ></app-dropdown>
+      </ng-container>
+
       <app-dropdown
         [categories]="difficultOptions"
         [defaultOption]="'Select difficulty'"

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-auto',
@@ -7,6 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class DropdownAutoComponent {
   @Input() items: any[] = [];
+  @Input() searchPlaceholder: string = '';
+  @Output() selectedItem: EventEmitter<any> = new EventEmitter();
   filteredItems: any[] = [];
   searchTerm: string = '';
   displayDropdown: boolean = false;
@@ -14,19 +16,18 @@ export class DropdownAutoComponent {
   search(event: any): void {
     this.displayDropdown = true;
     this.filteredItems = [];
-    console.log('GHL: ', event);
-    console.log('Search Term: ', this.searchTerm);
     this.items.forEach((item) => {
-      if (item.name.includes(this.searchTerm)) {
+      const currentItem = item.name.toLowerCase();
+      const currentSearchTerm = this.searchTerm.toLowerCase();
+      if (currentItem.includes(currentSearchTerm)) {
         this.filteredItems.push(item);
       }
     });
-    console.log('FI: ', this.filteredItems);
   }
 
   selectItem(event: any): void {
     this.displayDropdown = false;
-    console.log('SELECTED ITEM: ', event);
-    this.searchTerm = event;
+    this.searchTerm = event.name;
+    this.selectedItem.emit(event);
   }
 }

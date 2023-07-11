@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Category, Difficulty, Question } from '../data.models';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { QuizService } from '../quiz.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { QuizService } from '../quiz.service';
   styleUrls: ['./quiz-maker.component.css'],
 })
 export class QuizMakerComponent {
+  enableAutoComplete: boolean = false;
   categories$: Observable<Category[]>;
   questions$!: Observable<Question[]>;
 
@@ -29,13 +30,11 @@ export class QuizMakerComponent {
   constructor(protected quizService: QuizService) {
     this.categories$ = quizService.getAllCategories().pipe(
       tap((allCategories) => {
-        console.log('HE: ', allCategories);
         const categories = allCategories.map((category) => ({
           ...category,
           name: this.extractCategory(category.name),
           subCategory: this.mapSubCategory(category.name),
         }));
-        console.log('TU: ', categories);
         this.allSubCategories = categories
           .filter((item) => item.subCategory !== undefined)
           .map((item) => ({
@@ -43,17 +42,6 @@ export class QuizMakerComponent {
             name: item.subCategory,
             subCategory: item.name,
           }));
-        console.log('All Categories:', this.allSubCategories);
-        // map sub categories
-        // let subCategories = categories
-        //   .filter((item) => item.hasSub)
-        //   .map((item) => ({
-        //     ...item,
-        //     name: this.extractSubCategory(item.name),
-        //   }));
-        // console.log('CATs: ', subCategories);
-        // this.subCategories = subCategories;
-        //return unique categories
         const map = new Map(categories.map((cat) => [cat.name, cat]));
         this.uniqueCategories = [...map.values()];
       })
@@ -81,29 +69,27 @@ export class QuizMakerComponent {
   }
 
   handleCatSelectedOption(event: any): void {
-    console.log('Received: ', event);
     this.catId = event.id;
     this.currentCategory = event.name;
     this.hasSubCategory = event.subCategory;
     this.getSubCategories();
   }
+
   handleSubCatSelectedOption(event: any): void {
-    console.log('Received: ', event);
     this.catId = event.id;
-    // this.currentCategory = event.name;
-    // this.hasSubCategory = event.subCategory;
   }
 
   handleSelectedDifficulty(event: any): void {
-    console.log('Received: ', event);
     this.difficulty = event.name;
   }
 
   getSubCategories(): void {
-    console.log('Getting sub categories');
     this.activeCategories = this.allSubCategories.filter(
       (item) => item.subCategory === this.currentCategory
     );
-    console.log('sub categories ', this.activeCategories);
+  }
+
+  toggleAutoComplete(): void {
+    this.enableAutoComplete = !this.enableAutoComplete;
   }
 }

@@ -11,6 +11,7 @@ import { QuestionComponent } from './question/question.component';
 import { AnswersComponent } from './answers/answers.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { DropdownAutoComponent } from './dropdown-auto/dropdown-auto.component';
+import { CharsBoldPipe } from './chars-bold.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DropdownAutoComponent } from './dropdown-auto/dropdown-auto.component';
     QuestionComponent,
     AnswersComponent,
     DropdownComponent,
-    DropdownAutoComponent
+    DropdownAutoComponent,
+    CharsBoldPipe
   ],
   imports: [
     BrowserModule,
