@@ -10,6 +10,7 @@ import { QuizComponent } from './quiz/quiz.component';
 import { QuestionComponent } from './question/question.component';
 import { AnswersComponent } from './answers/answers.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
+import { DropdownAutoComponent } from './dropdown-auto/dropdown-auto.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DropdownComponent } from './dropdown/dropdown.component';
     QuizComponent,
     QuestionComponent,
     AnswersComponent,
-    DropdownComponent
+    DropdownComponent,
+    DropdownAutoComponent
   ],
   imports: [
     BrowserModule,

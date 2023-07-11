@@ -1,6 +1,7 @@
 <ng-container *ngIf="categories$ | async">
   <div class="row">
     <div class="col-sm-11">
+      <app-dropdown-auto [items]="uniqueCategories"></app-dropdown-auto>
       <app-dropdown
         [categories]="uniqueCategories"
         [defaultOption]="'Select category'"
