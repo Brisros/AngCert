@@ -1,21 +1,28 @@
-<div class="row">
-  <div class="col-sm-11">
-    <select #category id="categorySelect">
-      <option>Select category</option>
-      <option [value]="category.id" *ngFor="let category of categories$ | async">
-        {{category.name}}
-      </option>
-    </select>
-    <select #difficulty id="difficultySelect">
-      <option>Select difficulty</option>
-      <option>Easy</option>
-      <option>Medium</option>
-      <option>Hard</option>
-    </select>
-    <button class="primary" id="createBtn" (click)="createQuiz(category.value, difficulty.value)">Create</button>
+<ng-container *ngIf="categories$ | async">
+  <div class="row">
+    <div class="col-sm-11">
+      <app-dropdown
+        [categories]="uniqueCategories"
+        [defaultOption]="'Select category'"
+        (selectedOption)="handleCatSelectedOption($event)"
+      ></app-dropdown>
+      <app-dropdown
+        *ngIf="hasSubCategory"
+        [categories]="activeCategories"
+        [defaultOption]="'Select a subCategory'"
+        (selectedOption)="handleSubCatSelectedOption($event)"
+      ></app-dropdown>
+      <app-dropdown
+        [categories]="difficultOptions"
+        [defaultOption]="'Select difficulty'"
+        (selectedOption)="handleSelectedDifficulty($event)"
+      ></app-dropdown>
+      <button class="primary" id="createBtn" (click)="createQuiz()">
+        Create
+      </button>
+    </div>
   </div>
-
-</div>
-<div class="row">
-   <app-quiz [questions]="questions$ | async" ></app-quiz>
-</div>
+  <div class="row">
+    <app-quiz [questions]="questions$ | async"></app-quiz>
+  </div>
+</ng-container>

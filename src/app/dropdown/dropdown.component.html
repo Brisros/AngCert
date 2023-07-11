@@ -1,0 +1,11 @@
+<select
+  #category
+  id="categorySelect"
+  [(ngModel)]="currentOption"
+  (change)="mapSelectedData()"
+>
+  <option value="">{{ defaultOption }}</option>
+  <option [ngValue]="category" *ngFor="let category of categories">
+    {{ category.name }}
+  </option>
+</select>
