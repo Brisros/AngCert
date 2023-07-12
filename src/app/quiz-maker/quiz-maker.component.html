@@ -1,6 +1,11 @@
 <ng-container *ngIf="categories$ | async">
   <div class="row">
-    <input type="checkbox" id="inputType" [checked]="enableAutoComplete" (click)="toggleAutoComplete()">
+    <input
+      type="checkbox"
+      id="inputType"
+      [checked]="enableAutoComplete"
+      (click)="toggleAutoComplete()"
+    />
     <label for="inputType">Enable autocomplete dropdown?</label>
   </div>
   <div class="row">
@@ -42,6 +47,10 @@
     </div>
   </div>
   <div class="row">
-    <app-quiz [canCancelQuestion]="canCancelQuestion" [questions]="questions$ | async" (cancelQuestion)="cancelQuestion($event)"></app-quiz>
+    <app-quiz
+      [canCancelQuestion]="canCancelQuestion"
+      [questions]="questions$ | async"
+      (cancelQuestion)="cancelQuestion($event)"
+    ></app-quiz>
   </div>
 </ng-container>

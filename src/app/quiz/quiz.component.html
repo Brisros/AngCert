@@ -1,17 +1,18 @@
-<app-question
-  *ngFor="let q of questions; index as i"
-  [question]="q"
-  [canCancelQuestion]="canCancelQuestion"
-  (change)="userAnswers[i] = $event"
-  (cancelQuestion)="cancelQuestion.emit($event)"
->
-</app-question>
-<div>
-  <button
-    class="inverse large"
-    *ngIf="userAnswers.length == 5"
-    (click)="submit()"
+  <app-question
+    *ngFor="let q of questions; index as i"
+    [question]="q"
+    [canCancelQuestion]="canCancelQuestion"
+    [userAnswerState]="quizService.getAnswersState(i)"
+    (change)="saveState($event, i)"
+    (cancelQuestion)="cancelQuestion.emit($event)"
   >
-    Submit
-  </button>
-</div>
+  </app-question>
+  <div>
+    <button
+      class="inverse large"
+      *ngIf="userAnswers.length == 5"
+      (click)="submit()"
+    >
+      Submit
+    </button>
+  </div>

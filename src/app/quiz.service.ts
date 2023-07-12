@@ -14,6 +14,7 @@ import {
 })
 export class QuizService {
   private API_URL = 'https://opentdb.com/';
+  private answerState: string[] = [];
   private latestResults!: Results;
 
   constructor(private http: HttpClient) {}
@@ -58,5 +59,17 @@ export class QuizService {
 
   getLatestResults(): Results {
     return this.latestResults;
+  }
+
+  saveAnswersState(answers: string[]): void {
+    this.answerState = answers;
+  }
+
+  getAnswersState(index: number): string {
+    return this.answerState[index];
+  }
+
+  resetAnswersState(): void {
+    this.answerState = [];
   }
 }

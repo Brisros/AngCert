@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Question } from '../data.models';
 
 @Component({
@@ -19,6 +13,8 @@ export class QuestionComponent {
   correctAnswer?: string;
   @Input()
   userAnswer?: string;
+  @Input()
+  userAnswerState?: string;
   @Input() canCancelQuestion: boolean = true;
   @Output() cancelQuestion: EventEmitter<Question> = new EventEmitter();
 
@@ -30,6 +26,10 @@ export class QuestionComponent {
         return 'tertiary';
       if (answer == this.correctAnswer) return 'secondary';
     }
+    if (answer === this.userAnswerState) {
+      return 'tertiary';
+    }
+
     return 'primary';
   }
 
@@ -44,7 +44,6 @@ export class QuestionComponent {
   }
 
   changeQuestion() {
-    console.log('HEK, ', this.question);
     this.cancelQuestion.emit(this.question);
   }
 }

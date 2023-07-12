@@ -1,16 +1,6 @@
 import { Component } from '@angular/core';
 import { Category, Difficulty, Question } from '../data.models';
-import {
-  Observable,
-  combineLatest,
-  map,
-  switchMap,
-  tap,
-  withLatestFrom,
-  shareReplay,
-  ReplaySubject,
-  BehaviorSubject,
-} from 'rxjs';
+import { Observable, map, tap, withLatestFrom, BehaviorSubject } from 'rxjs';
 import { QuizService } from '../quiz.service';
 
 @Component({
@@ -74,6 +64,7 @@ export class QuizMakerComponent {
 
   createQuiz(records: number = 5): void {
     this.canCancelQuestion = true;
+    this.quizService.resetAnswersState();
     if (this.catId.length !== 0 && this.difficulty.length !== 0)
       this.questions$ = this.getQuizQuestions(records);
   }
