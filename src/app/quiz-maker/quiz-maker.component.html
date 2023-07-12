@@ -42,6 +42,6 @@
     </div>
   </div>
   <div class="row">
-    <app-quiz [questions]="questions$ | async"></app-quiz>
+    <app-quiz [canCancelQuestion]="canCancelQuestion" [questions]="questions$ | async" (cancelQuestion)="cancelQuestion($event)"></app-quiz>
   </div>
 </ng-container>

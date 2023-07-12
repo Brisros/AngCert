@@ -1,6 +1,16 @@
 import { Component } from '@angular/core';
 import { Category, Difficulty, Question } from '../data.models';
-import { Observable, tap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+  shareReplay,
+  ReplaySubject,
+  BehaviorSubject,
+} from 'rxjs';
 import { QuizService } from '../quiz.service';
 
 @Component({
@@ -12,6 +22,7 @@ export class QuizMakerComponent {
   enableAutoComplete: boolean = false;
   categories$: Observable<Category[]>;
   questions$!: Observable<Question[]>;
+  currentQuestions$ = new BehaviorSubject<Question[]>([]);
 
   uniqueCategories: Category[] = [];
   activeCategories: Category[] = [];
@@ -26,6 +37,7 @@ export class QuizMakerComponent {
   ];
   catId = '';
   difficulty = '';
+  canCancelQuestion: boolean = true;
 
   constructor(protected quizService: QuizService) {
     this.categories$ = quizService.getAllCategories().pipe(
@@ -60,11 +72,21 @@ export class QuizMakerComponent {
       : undefined;
   }
 
-  createQuiz(): void {
+  createQuiz(records: number = 5): void {
+    this.canCancelQuestion = true;
     if (this.catId.length !== 0 && this.difficulty.length !== 0)
-      this.questions$ = this.quizService.createQuiz(
-        this.catId,
-        this.difficulty as Difficulty
+      this.questions$ = this.getQuizQuestions(records);
+  }
+
+  getQuizQuestions(records: number): Observable<Question[]> {
+    return this.quizService
+      .createQuiz(this.catId, this.difficulty as Difficulty, records)
+      .pipe(
+        tap((questions) => {
+          if (records !== 1) {
+            this.currentQuestions$.next(questions);
+          }
+        })
       );
   }
 
@@ -91,5 +113,21 @@ export class QuizMakerComponent {
 
   toggleAutoComplete(): void {
     this.enableAutoComplete = !this.enableAutoComplete;
+  }
+
+  cancelQuestion(question: Question): void {
+    this.canCancelQuestion = false;
+    const oneQuizQuestion$ = this.getQuizQuestions(1);
+    this.questions$ = oneQuizQuestion$.pipe(
+      withLatestFrom(this.currentQuestions$),
+      map(([newQuestion, currentQuestions]) => {
+        const newQuestions = currentQuestions.map((current) => {
+          return current.question === question.question
+            ? newQuestion[0]
+            : current;
+        });
+        return newQuestions;
+      })
+    );
   }
 }

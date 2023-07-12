@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {Question} from '../data.models';
 import {QuizService} from '../quiz.service';
 import {Router} from '@angular/router';
@@ -12,6 +12,9 @@ export class QuizComponent {
 
   @Input()
   questions: Question[] | null = [];
+  @Input() canCancelQuestion: boolean = false;
+  @Output() cancelQuestion: EventEmitter<Question> = new EventEmitter();
+
 
   userAnswers: string[] = [];
   quizService = inject(QuizService);
