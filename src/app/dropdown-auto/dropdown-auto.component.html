@@ -13,7 +13,7 @@
         <div
           class="pointer"
           (click)="selectItem(item)"
-          [innerHTML]="item['name'] | charsBold : searchTerm"
+          [innerHTML]="getItemName(item) | charsBold : searchTerm"
         ></div>
       </li>
     </ul>

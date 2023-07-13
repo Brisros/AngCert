@@ -15,16 +15,16 @@ import { Category } from '../data.models';
 })
 export class DropdownComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes) {
+    if (changes) {
       this.currentOption = '';
     }
   }
   @Input() categories: Category[] | null = [];
   @Input() defaultOption: string = 'Select Option';
-  @Output() selectedOption: EventEmitter<any> = new EventEmitter();
-  currentOption: any = '';
+  @Output() selectedOption: EventEmitter<Category> = new EventEmitter();
+  currentOption: Category | string = '';
 
-  mapSelectedData(): any {
-    this.selectedOption.emit(this.currentOption);
+  mapSelectedData(): void {
+    this.selectedOption.emit(this.currentOption as Category);
   }
 }

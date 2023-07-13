@@ -10,7 +10,7 @@ export class DropdownAutoComponent<T> {
   @Input() items: GenericItem<T>[] = [];
   @Input() searchPlaceholder: string = '';
   @Output() selectedItem: EventEmitter<GenericItem<T>> = new EventEmitter();
-  filteredItems: any[] = [];
+  filteredItems: GenericItem<T>[] = [];
   searchTerm: string = '';
   displayDropdown: boolean = false;
 
@@ -30,5 +30,9 @@ export class DropdownAutoComponent<T> {
     this.displayDropdown = false;
     this.searchTerm = event.name as string;
     this.selectedItem.emit(event);
+  }
+
+  getItemName(item: GenericItem<T>): string {
+    return item.name as string;
   }
 }

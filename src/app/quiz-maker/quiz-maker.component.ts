@@ -42,7 +42,7 @@ export class QuizMakerComponent {
           .filter((item) => item.subCategory !== undefined)
           .map((item) => ({
             ...item,
-            name: item.subCategory,
+            name: item.subCategory as string,
             subCategory: item.name,
           }));
         const map = new Map(categories.map((cat) => [cat.name, cat]));
@@ -65,7 +65,7 @@ export class QuizMakerComponent {
       : category;
   }
 
-  mapSubCategory(category: string): any {
+  mapSubCategory(category: string): string | undefined {
     return category.includes(':')
       ? category.substring(category.indexOf(':') + 1, category.length).trim()
       : undefined;
@@ -90,19 +90,19 @@ export class QuizMakerComponent {
       );
   }
 
-  handleCatSelectedOption(event: any): void {
-    this.catId = event.id;
-    this.currentCategory = event.name;
-    this.hasSubCategory = event.subCategory;
+  handleCatSelectedOption(event: GenericItem<Category>|Category): void {
+    this.catId = String(event.id);
+    this.currentCategory = String(event.name);
+    this.hasSubCategory = Boolean((event as unknown as Category).subCategory);
     this.getSubCategories();
   }
 
-  handleSubCatSelectedOption(event: any): void {
-    this.catId = event.id;
+  handleSubCatSelectedOption(event: GenericItem<Category>|Category): void {
+    this.catId = String(event.id);
   }
 
-  handleSelectedDifficulty(event: any): void {
-    this.difficulty = event.name;
+  handleSelectedDifficulty(event: Category): void {
+    this.difficulty = String(event.name);
   }
 
   getSubCategories(): void {
