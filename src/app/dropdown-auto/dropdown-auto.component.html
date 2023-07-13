@@ -1,10 +1,11 @@
 <div id="autocomplete-wrapper" class="autocomplete-wrapper">
   <input
+    autocomplete="off"
     id="autocomplete-input"
     type="text"
     [placeholder]="searchPlaceholder"
     [(ngModel)]="searchTerm"
-    (input)="search($event)"
+    (input)="search()"
   />
   <ng-container *ngIf="displayDropdown">
     <ul class="autocomplete-list">
@@ -12,7 +13,7 @@
         <div
           class="pointer"
           (click)="selectItem(item)"
-          [innerHTML]="item.name | charsBold : searchTerm"
+          [innerHTML]="item['name'] | charsBold : searchTerm"
         ></div>
       </li>
     </ul>

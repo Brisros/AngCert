@@ -26,4 +26,9 @@ export interface Results {
   score: number;
 }
 
+export type GenericItem<T> = {
+  id: number;
+  name: T;
+}
+
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';

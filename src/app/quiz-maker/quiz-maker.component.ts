@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Category, Difficulty, Question } from '../data.models';
+import { Category, Difficulty, GenericItem, Question } from '../data.models';
 import { Observable, map, tap, withLatestFrom, BehaviorSubject } from 'rxjs';
 import { QuizService } from '../quiz.service';
 
@@ -15,6 +15,7 @@ export class QuizMakerComponent {
   currentQuestions$ = new BehaviorSubject<Question[]>([]);
 
   uniqueCategories: Category[] = [];
+  uniqueCategoriesGeneric: GenericItem<Category>[] = [];
   activeCategories: Category[] = [];
   allSubCategories: Category[] = [];
   hasSubCategory: boolean = false;
@@ -46,8 +47,16 @@ export class QuizMakerComponent {
           }));
         const map = new Map(categories.map((cat) => [cat.name, cat]));
         this.uniqueCategories = [...map.values()];
+        this.uniqueCategoriesGeneric = this.mapGenericItem([...map.values()]);
       })
     );
+  }
+
+  mapGenericItem(categories: Category[]): GenericItem<Category>[] {
+    return categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+    })) as unknown as GenericItem<Category>[];
   }
 
   extractCategory(category: string): string {
